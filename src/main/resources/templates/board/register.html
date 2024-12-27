@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<meta charset="UTF-8">
+
+	<title>글쓰기</title>
+	<link crossorigin="anonymous"
+		  href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+		  rel="stylesheet">
+	<link
+			href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+			rel="stylesheet">
+
+	<!-- Bootstrap core CSS -->
+	<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+	<!-- Additional CSS Files -->
+	<link href="/assets/css/fontawesome.css" rel="stylesheet">
+	<link href="/assets/css/templatemo-cyborg-gaming.css" rel="stylesheet">
+	<link href="/assets/css/owl.css" rel="stylesheet">
+	<link href="/assets/css/animate.css" rel="stylesheet">
+	<link href="https://unpkg.com/swiper@7/swiper-bundle.min.css"
+		  rel="stylesheet" />
+
+	<style>
+		.uploadResult {
+			width: 100%;
+			background-color: #c0c0c0;
+			margin-top: 10px;
+		}
+
+		.uploadResult ul {
+			display: flex;
+			flex-flow: row;
+			justify-content: center;
+			align-items: center;
+			vertical-align: top;
+			overflow: auto;
+		}
+
+		.uploadResult ul li {
+			list-style: none;
+			padding: 10px;
+			margin-left: 2em;
+		}
+
+		.uploadResult ul li img {
+			width: 100px;
+		}
+
+		.main-button button {
+			font-size: 14px;
+			color: #fff;
+			background-color: #4400ff;
+			padding: 12px 30px;
+			display: inline-block;
+			border-radius: 25px;
+			border: none;
+			font-weight: 400;
+			text-transform: capitalize;
+			letter-spacing: 0.5px;
+			transition: all .3s;
+			position: relative;
+			overflow: hidden;
+		}
+
+		.main-button button:hover {
+			background-color: #fff;
+			color: #4400ff;
+		}
+		.pimg {
+			display: block; /* 이미지를 블록 레벨 요소로 설정하여 가로 중앙 정렬을 할 수 있도록 합니다 */
+			margin: auto;
+			object-fit: cover;
+			width: 100%;
+		}
+
+		html.open {
+			overflow: hidden;
+		}
+
+		#menu.open {
+			left: 0px;
+		}
+
+		.page_cover.open {
+			display: block;
+		}
+
+		.btn {
+			width: 50px;
+			height: 50px;
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			z-index: 1;
+			background-image:
+					url("/assets/images/menuopen.png");
+			background-size: 50%;
+			background-repeat: no-repeat;
+			background-position: center;
+			cursor: pointer;
+		}
+
+		.close {
+			width: 50px;
+			height: 50px;
+			position: absolute;
+			left: 0px;
+			top: 0px;
+			background-image:
+					url("/assets/images/menuclose.png");
+			background-size: 50%;
+			background-repeat: no-repeat;
+			background-position: center;
+			cursor: pointer;
+		}
+
+		#menu {
+			width: 150px;
+			height: 100%;
+			position: fixed;
+			top: 0px;
+			left: -202px;
+			z-index: 10;
+			border: 1px solid #c9c9c9;
+			background-color: white;
+			text-align: center;
+			font-weight: bold;
+			transition: All 0.2s ease;
+			-webkit-transition: All 0.2s ease;
+			-moz-transition: All 0.2s ease;
+			-o-transition: All 0.2s ease;
+			padding-top: 50px;
+			padding-left: 0px;
+			padding-right: 40px;
+		}
+
+		#menu a {
+			padding: 0;
+			text-decoration: none;
+			font-size: 18px;
+			color: #25a4cd;
+			display: block;
+			transition: 0.3s;
+		}
+
+		#menu.open {
+			left: -1px;
+		}
+
+		.page_cover.open {
+			display: block;
+		}
+
+		.page_cover {
+			width: 100%;
+			height: 100%;
+			position: fixed;
+			top: 0px;
+			right: 0px;
+			background-color: rgba(0, 0, 0, 0.4);
+			z-index: 4;
+			display: none;
+		}
+
+		#menu ul {
+			width: 190px;
+			margin: 0;
+			padding: 0;
+		}
+
+		#menu ul.nav li {
+			position: relative;
+			float: left;
+			width: 78.5%;
+			list-style-type: none;
+			font-size: 18px;
+		}
+
+		#menu ul.nav li a {
+			display: block;
+			width: 100%;
+			height: 100%;
+			line-height: 50px;
+			text-indent: 20px;
+			text-align: left;
+			color: #2e2eea;
+			font-weight: bold;
+			text-decoration: none;
+		}
+
+		#menu ul.nav li a:hover {
+			background: #2E2EFE;
+			color: white;
+		}
+	</style>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".btn").click(function() {
+				$("#menu,.page_cover,html").addClass("open");
+				window.location.hash = "#open";
+			})
+		})
+
+		window.onhashchange = function() {
+			if (location.hash != "#open") {
+				$("#menu,.page_cover,html").removeClass("open");
+			}
+		};
+
+		$(document).ready(function() {
+			$("#menu ul.sub_mobile").hide();
+			$("#menu ul.nav li").click(function() {
+				$("ul", this).slideToggle("fast");
+			})
+		})
+	</script>
+	</style>
+
+</head>
+<body>
+<header class="header-area header-sticky">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<nav class="main-nav">
+					<!-- ***** Logo Start ***** -->
+					<a class="mt-4" href="/"> <img alt=""
+												   src="/assets/images/logo.png"
+												   style="margin-top: 2.3%; padding: 0px">
+					</a>
+					<!-- ***** Logo End ***** -->
+
+					<!-- ***** Menu Start ***** -->
+
+					<ul class="nav" style="margin: 2.3% 0% 0% 0%; flex-basis: 100%;">
+						<li><a class="active" href="/">Home</a></li>
+						<li class="check1" style="display: none"><a
+								href="/member/signup">회원가입</a></li>
+						<li class="check1" style="display: none"><a
+								href="/member/login">로그인</a></li>
+						<li class="check2" style="display: none"><a
+								href="/member/logout">로그아웃</a></li>
+						<li class="check2" style="display: none"><a
+								href="/member/mypage">[[${session.loginId}]] <img alt=""
+																				  src="/assets/images/profile-header.jpg">
+						</a></li>
+					</ul>
+
+
+
+
+				</nav>
+			</div>
+		</div>
+	</div>
+
+</header>
+<div class="container" style="margin-top: 7%">
+	<div class="row">
+		<div class="col-12">
+			<nav class="main-nav">
+				<form th:action="@{/board/register}" th:method="post" name="myForm"
+					  onsubmit="return validateForm()">
+					<div class="form-group">
+						<label>제목</label> <input type="text" class="form-control"
+												 name="title" placeholder="상품 제목을 입력해주세요." required>
+					</div>
+					<div class="form-group">
+						<label>가격</label> <input type="text" class="form-control"
+												 name="price" placeholder="숫자만 입력해주세요." pattern="\d+" required>
+					</div>
+					<div class="form-group fileForm">
+						<label>상품 이미지</label>
+						<div class="custom-file">
+							<input type="file" class="custom-file-input files"
+								   id="fileInput" multiple> <label
+								class="custom-file-label" data-browse="Browse"></label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label>상품 설명</label>
+						<textarea class="form-control" rows="5" name="content"
+								  placeholder="여러 장의 상품 사진과 구입 연도, 브랜드, 사용감, 하자 유무 등 구매자에게 필요한 정보를 꼭 포함해 주세요."
+								  required></textarea>
+					</div>
+					<label>카테고리</label>
+					<div class="form-group">
+						<div class="input-group-prepend">
+							<select class="custom-select" name="category">
+								<option value="n">-------</option>
+								<option value="남성의류">남성의류</option>
+								<option value="여성의류">여성의류</option>
+								<option value="악세서리">악세서리</option>
+								<option value="전자기기">전자기기</option>
+								<option value="기프티콘">기프티콘</option>
+								<option value="생활용품">생활용품</option>
+								<option value="스포츠">스포츠</option>
+								<option value="음반/악기">음반/악기</option>
+								<option value="도서">도서</option>
+							</select>
+						</div>
+					</div>
+
+
+					<div class="form-group">
+						<label>거래 희망 장소</label> <input type="text" class="form-control"
+													   id="search" name="location"
+													   placeholder="정확한 도로명 또는 지번 주소를 입력해주세요. ex)의정부역(X) / 의정부동 275-3(O) / 의정부시 평화로 525(O)"
+													   required>
+						<button type="button" onclick="searchAddress()">검색</button>
+					</div>
+					<!-- 카카오 지도 Open API 시작 -->
+					<!-- 지도 영역 생성 -->
+					<center>
+						<div id="map" style="width: 600px; height: 240px"></div>
+						<div id="searchBox"></div>
+
+						<a href="map" class="main-button"><i>지도 자세히 보기</i></a>
+					</center>
+					<!-- 카카오 지도 Open API 끝 -->
+					<div class="form-group">
+						<label>작성자</label> <input type="text" class="form-control"
+												  name="memberId" th:value="${sessionMember.memberId}" required
+												  readonly>
+					</div>
+					<div class="box"></div>
+
+
+
+					<div class="uploadResult">
+						<ul>
+
+						</ul>
+					</div>
+					<div class="main-button" style="margin-top: 3%">
+						<button type="submit" class="submitbtn">작성완료</button>
+						<div>
+				</form>
+			</nav>
+		</div>
+	</div>
+</div>
+
+
+<footer>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12">
+				<p>
+					Copyright © 2023 <a href="#">윤서가 (참조해서) 만들었습니다</a> Company. All
+					rights reserved. <br>우후핫 <a href="/" target="_blank"
+												title="윤서의 험난한 디자인 도전기">윤서의</a> 험난한 디자인 도전기 <a href="/"
+																							   target="_blank"></a>
+				</p>
+			</div>
+		</div>
+	</div>
+</footer>
+<script>
+	var userId = "[[${session.loginId}]]";
+	$(document).ready(function () {
+
+		if (userId === "") {
+
+			$('.check1').show();
+		} else if (userId !== "") {
+			$('.check2').show();
+		}
+	});
+</script>
+<script>
+
+	$(document).ready(function(e){
+		var regex = new RegExp("(.*?)\.(exe|sh|zip|alz|tiff)$");
+		var maxSize = 10485760; // 10mb
+
+		function checkExtension(fileName, fileSize){
+
+			if(fileSize >= maxSize){
+				alert("파일 사이즈 초과");
+				return false;
+			}
+
+			if(regex.test(fileName)){
+				alert("해당 종류의 파일은 업로드 할 수 없습니다.");
+				return false;
+			}
+			return true;
+		}
+
+		$(".custom-file-input").on("change", function() {
+
+			var fileName = $(this).val().split("\\").pop();
+			$(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+
+			var formData = new FormData();
+
+			var inputFile = $(this);
+
+			var files = inputFile[0].files;
+
+			var appended = false;
+
+			for (var i = 0; i < files.length; i++) {
+
+				if(!checkExtension(files[i].name, files[i].size) ){
+					return false;
+				}
+
+				console.log(files[i]);
+				formData.append("uploadFiles", files[i]);
+				appended = true;
+			}
+
+			//upload를 하지 않는다.
+			if (!appended) {return;}
+
+			for (var value of formData.values()) {
+				console.log(value);
+			}
+
+			//실제 업로드 부분
+			//upload ajax
+			$.ajax({
+				url: '/uploadAjax',
+				processData: false,
+				contentType: false,
+				data: formData,
+				type: 'POST',
+				dataType:'json',
+				success: function(result){
+					console.log(result);
+					showResult(result);
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					console.log(textStatus);
+				}
+			}); //$.ajax
+		}); //end change event
+
+		function showResult(uploadResultArr){
+
+			var uploadUL = $(".uploadResult ul");
+
+			var str ="";
+
+			$(uploadResultArr).each(function(i, obj) {
+
+				str += "<li data-name='" + obj.fileName + "' data-path='"+obj.folderPath+"' data-uuid='"+obj.uuid+"'>";
+				str + " <div>";
+				str += "<button type='button' data-file=\'" + obj.imageURL + "\' "
+				str += "class='btn-warning btn-sm'>X</button><br>";
+				str += "<img src='/display?fileName=" + obj.thumbnailURL + "'>";
+				str += "</div>";
+				str + "</li>";
+			});
+
+			uploadUL.append(str);
+		}
+
+		$(".uploadResult").on("click", "li button", function(e){
+			console.log("delete file");
+
+			var targetFile = $(this).data("file");
+
+			var targetLi = $(this).closest("li");
+
+			$.ajax({
+				url: "/removeFile",
+				data : {fileName: targetFile},
+				dataType : "text",
+				type: "POST",
+				success: function(result) {
+					targetLi.remove();
+				},
+				error: function(xhr, status, error) {
+					alert("파일 삭제에 실패하였습니다. 다시 시도해주세요.");
+					console.log(xhr.responseText);
+				}
+			});//end of ajax
+		})
+
+		//prevent submit
+		$(".submitbtn").on("click", function(e) {
+			// 이미지가 선택되지 않은 경우
+			if ($(".uploadResult li").length === 0) {
+				e.preventDefault();
+				alert("이미지를 등록해주세요.");
+				return;
+			}
+
+			// 카테고리를 선택하지 않은 경우
+			var categorySelect = document.getElementsByName("category")[0];
+			if (categorySelect.value === "n") {
+				alert("카테고리를 선택해주세요.");
+				categorySelect.focus();
+				return false;
+			}
+
+			var str = "";
+
+			$(".uploadResult li").each(function(i,obj){
+				var target = $(obj);
+
+				str += "<input type='hidden' name='imageDTOList["+i+"].imgName' value='"+target.data('name') +"'>";
+
+				str += "<input type='hidden' name='imageDTOList["+i+"].path' value='"+target.data('path')+"'>";
+
+				str += "<input type='hidden' name='imageDTOList["+i+"].uuid' value='"+target.data('uuid')+"'>";
+
+			});
+
+			//태그들이 추가된 것을 확인한 후에 comment를 제거
+			$(".box").html(str);
+
+			$("form").submit();
+
+		});
+
+	}); //document ready
+</script>
+<!-- 자바스크립트 API 불러오기 /  -->
+<script type="text/javascript"
+		src="//dapi.kakao.com/v2/maps/sdk.js?appkey=48f6301bb9be5b49ef1aeea540a1eaa5&libraries=services"></script>
+<!-- 지도 띄우기 -->
+<script>
+
+
+	var container = document.getElementById('map'); // 지도 담을 영역
+	var options = { //지도 생성할 때 옵션
+		center: new kakao.maps.LatLng(37.7398, 127.0473), //지도의 중심좌표값 설정 (의정부역으로 지정)
+		level: 6 //지도 레벨 (확대, 축소 정도)
+	};
+
+	var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+	var prevMarker = null; //이전 마커 객체 변수
+	var prevInfowindow = null; //이전 Info 객체 변수
+
+	//검색 기능 추가
+	var geocoder = new kakao.maps.services.Geocoder();
+
+
+	//지도에 클릭이벤트 구현, 클릭하면 마지막 파라미터로 넘어온 함수 호출
+	kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
+		//클릭한 위치의 위도, 경도 정보를 가져옴.
+		var latlng = mouseEvent.latLng;
+
+		//이전 마커 객체가 존재한다면 삭제
+		if (prevMarker !== null){
+			prevMarker.setMap(null);
+			prevMarker = null;
+		}
+
+		//위와 동일하도록 이전 InfoWindow 객체가 존재한다면 삭제
+		if (prevInfowindow !== null){
+			prevInfowindow.close(null);
+			prevInfowindow = null;
+		}
+
+		var marker = new kakao.maps.Marker({
+			position: latlng,
+			map: map
+		});
+		prevMarker = marker; //이전 마커 객체를 저장함
+
+		//마커위치를 클릭한 위치로 옮기기
+		marker.setPosition(latlng);
+
+		//Open Weather Map API 불러오기
+		var api_key = '385a3155b6ee0bb00df1afdbab5e3858'; //Open Weather Map의 API_KEY
+		var url = `https://api.openweathermap.org/data/2.5/weather?lat=${latlng.getLat()}&lon=${latlng.getLng()}&appid=${api_key}`;
+		fetch(url)
+				.then(response => response.json())
+				.then(data => {
+					var weather = data.weather[0];
+					var temp = data.main.temp - 273.15;
+					var message = `<center>날씨: ${weather.description}<br>기온: ${temp.toFixed(1)}°C</center>`;
+					var infowindow = new kakao.maps.InfoWindow({
+						content: message,
+						position: latlng,
+						maxWidth: 400
+					});
+					infowindow.open(map, marker);
+					prevInfowindow = infowindow;
+				})
+				.catch(error => console.error(error));
+	});
+
+
+	/*맵 컨트롤러*/
+	var mapTypeControl = new kakao.maps.MapTypeControl();//지도타입(일반, 스카이뷰) 컨트롤 생성
+	map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);//컨트롤을 추가해야 지도 위에 표시됨
+
+	var zoomControl = new kakao.maps.ZoomControl();//지도 확대 축소 제어할 수 있는 줌 컨트롤 생성
+	map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
+	//주소 검색
+	document.getElementById('search').addEventListener('keydown', function(event){
+		if(event.keyCode == 13){
+			searchAddress();
+		}
+	});
+
+
+
+	function searchAddress(){
+		var address = document.getElementById('search').value;
+
+
+		geocoder.addressSearch(address, function(result, status){
+			if(status === kakao.maps.services.Status.OK) {
+				var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+				var addMarker = new kakao.maps.Marker({
+					position: coords
+				});
+				addMarker.setMap(map);
+				map.setCenter(coords);
+
+				if (prevMarker !== null){
+					prevMarker.setMap(null);
+					prevMarker = null;
+				}
+
+				prevMarker = addMarker;
+
+
+				if (prevInfowindow !== null){
+					prevInfowindow.close(null);
+					prevInfowindow = null;
+				}
+
+				var api_key = '385a3155b6ee0bb00df1afdbab5e3858'; //Open Weather Map의 API_KEY
+				var url = `https://api.openweathermap.org/data/2.5/weather?lat=${latlng.getLat()}&lon=${latlng.getLng()}&appid=${api_key}`;
+				fetch(url)
+						.then(response => response.json())
+						.then(data => {
+							var weather = data.weather[0];
+							var temp = data.main.temp - 273.15;
+							var message = `<center>날씨: ${weather.description}<br>기온: ${temp.toFixed(1)}°C</center>`;
+							var infowindow = new kakao.maps.InfoWindow({
+								content: message,
+								position: latlng,
+								maxWidth: 400
+							});
+							infowindow.open(map, marker);
+							prevInfowindow = infowindow;
+						})
+						.catch(error => console.error(error));
+			}else if (status === null){
+				alert('주소를 입력해주세요.')
+			}else{
+				alert('주소를 찾을 수 없습니다.')
+			}
+
+
+
+		});
+	}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<meta charset="UTF-8">
+
+<title>list</title>
+<link crossorigin="anonymous"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+	rel="stylesheet">
+
+<!-- Bootstrap core CSS -->
+<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+<!-- Additional CSS Files -->
+<link href="/assets/css/fontawesome.css" rel="stylesheet">
+<link href="/assets/css/templatemo-cyborg-gaming.css" rel="stylesheet">
+<link href="/assets/css/owl.css" rel="stylesheet">
+<link href="/assets/css/animate.css" rel="stylesheet">
+<link href="https://unpkg.com/swiper@7/swiper-bundle.min.css"
+	rel="stylesheet" />
+<style>
+
+.pimg {
+	display: block; /* 이미지를 블록 레벨 요소로 설정하여 가로 중앙 정렬을 할 수 있도록 합니다 */
+	margin: auto;
+	object-fit: cover;
+	width: 100%;
+}
+
+html.open {
+	overflow: hidden;
+}
+
+#menu.open {
+	left: 0px;
+}
+
+.page_cover.open {
+	display: block;
+}
+
+.btn {
+	width: 50px;
+	height: 50px;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	z-index: 1;
+	background-image:
+		url("/assets/images/menuopen.png");
+	background-size: 50%;
+	background-repeat: no-repeat;
+	background-position: center;
+	cursor: pointer;
+}
+
+.close {
+	width: 50px;
+	height: 50px;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	background-image:
+		url("/assets/images/menuclose.png");
+	background-size: 50%;
+	background-repeat: no-repeat;
+	background-position: center;
+	cursor: pointer;
+}
+
+#menu {
+	width: 150px;
+	height: 100%;
+	position: fixed;
+	top: 0px;
+	left: -202px;
+	z-index: 10;
+	border: 1px solid #c9c9c9;
+	background-color: white;
+	text-align: center;
+	font-weight: bold;
+	transition: All 0.2s ease;
+	-webkit-transition: All 0.2s ease;
+	-moz-transition: All 0.2s ease;
+	-o-transition: All 0.2s ease;
+	padding-top: 50px;
+	padding-left: 0px;
+	padding-right: 40px;
+}
+
+#menu a {
+	padding: 0;
+	text-decoration: none;
+	font-size: 18px;
+	color: #25a4cd;
+	display: block;
+	transition: 0.3s;
+}
+
+#menu.open {
+	left: -1px;
+}
+
+.page_cover.open {
+	display: block;
+}
+
+.page_cover {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	background-color: rgba(0, 0, 0, 0.4);
+	z-index: 4;
+	display: none;
+}
+
+#menu ul {
+	width: 190px;
+	margin: 0;
+	padding: 0;
+}
+
+#menu ul.nav li {
+	position: relative;
+	float: left;
+	width: 78.5%;
+	list-style-type: none;
+	font-size: 18px;
+}
+
+#menu ul.nav li a {
+	display: block;
+	width: 100%;
+	height: 100%;
+	line-height: 50px;
+	text-indent: 20px;
+	text-align: left;
+	color: #2e2eea;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+#menu ul.nav li a:hover {
+	background: #2E2EFE;
+	color: white;
+}
+</style>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".btn").click(function() {
+			$("#menu,.page_cover,html").addClass("open");
+			window.location.hash = "#open";
+		})
+	})
+
+	window.onhashchange = function() {
+		if (location.hash != "#open") {
+			$("#menu,.page_cover,html").removeClass("open");
+		}
+	};
+
+	$(document).ready(function() {
+		$("#menu ul.sub_mobile").hide();
+		$("#menu ul.nav li").click(function() {
+			$("ul", this).slideToggle("fast");
+		})
+	})
+</script>
+</head>
+<body>
+	<header class="header-area header-sticky">
+		<div class="container">
+			<div class="row">
+				<div class="col-12">
+					<nav class="main-nav">
+						<!-- ***** Logo Start ***** -->
+						<a class="mt-4" href="/"> <img alt=""
+							src="/assets/images/logo.png"
+							style="margin-top: 2.3%; padding: 0px">
+						</a>
+						<!-- ***** Logo End ***** -->
+						<!-- ***** Search End ***** -->
+						<form action="/board/list" method="get" id="searchForm"
+							style="margin: 3% 0% 0% 15%; flex-basis: 40%;">
+							<div class="input-group">
+								<input id='searchText' type="hidden" name="page" value="1"
+									onkeypress="handle">
+								<div class="input-group-prepend" value="tcw"
+									th:selected="${pageRequestDTO.type =='tcw'}">
+									<!-- 검색 셀렉트 숨기기 -->
+									<!--  
+                    <select class="custom-select" name="type" style="width:100px">
+                        <option th:selected="${pageRequestDTO.type == null}">-------</option>
+                        <option value="t" th:selected="${pageRequestDTO.type =='t'}" >제목</option>
+                        <option value="c" th:selected="${pageRequestDTO.type =='c'}"  >내용</option>
+                        <option value="w"  th:selected="${pageRequestDTO.type =='w'}" >작성자</option>
+                        <option value="tc"  th:selected="${pageRequestDTO.type =='tc'}" >제목 + 내용</option>
+                        <option value="tcw"  th:selected="${pageRequestDTO.type =='tcw'}" >제목 + 내용 + 작성자</option>
+                    </select>
+                    -->
+									<!-- 검색 셀렉트 숨기기 끝-->
+								</div>
+								<input class="form-control" name="keyword"
+									th:value="${pageRequestDTO.keyword}" style="width: 40%" placeholder="필요한 물품을 검색하세요!">
+								
+							</div>
+						</form>
+						<!-- ***** Search End ***** -->
+						<!-- ***** Menu Start ***** -->
+
+						<ul class="nav" style="margin: 2.3% 0% 0% 0%; flex-basis: 50%;">
+							<li class="nav-item"><a class="nav-link" href="/">Home</a>
+							</li>
+							<li class="nav-item check2" id="note-alert"
+								style="display: none;"><a class="nav-link"
+								href="/note/mynotes">대화창</a></li>
+							<li class="nav-item check2" style="display: none;"><a
+								class="nav-link" href="/board/wishlist">찜목록</a></li>
+							<li class="nav-item check" style="display: none;"><a
+								class="nav-link" href="/member/signup">회원가입</a></li>
+							<li class="nav-item check" style="display: none;"><a
+								class="nav-link" href="/member/login">로그인</a></li>
+							<li class="nav-item check2" style="display: none;"><a
+								class="nav-link" href="/member/logout">로그아웃</a></li>
+							<li class="nav-item check2" style="display: none;"><a
+								class="nav-link" href="/member/mypage">[[${session.loginId}]]
+									<img alt="" src="/assets/images/profile-header.jpg">
+							</a></li>
+						</ul>
+						<a class='menu-trigger'> <span>Menu</span>
+						</a>
+
+
+
+					</nav>
+				</div>
+			</div>
+		</div>
+	</header>
+
+	<div class="container" style="margin-top: 7%">
+		<div class="row">
+			<div class="col-12">
+				<nav class="main-nav">
+					<!-- 여기서부터 리스트 내용 끌어오기 -->
+					<div class="most-popular">
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="heading-section">
+									<h4>내가 쓴 게시글</h4>
+								</div>
+								<div class="row">
+									<!-- 일반 for 루프 사용 -->
+									<div th:each="dto, i : ${result.dtoList}" class="col-lg-3 col-sm-6" >
+			                 <a th:href="@{/board/read(mno = ${dto.mno}, page = ${result.page})}">
+			                    <div th:each="boardImage: ${dto.imageDTOList}" class="item" >
+			                        <div class="row" >
+			                            <div class="col-lg-12" style="margin-bottom:10%; ">
+			                                <img class="pimg" th:if="${dto.imageDTOList.size() > 0 && dto.imageDTOList[0].path != null}" 
+			                                     th:src="@{|/display?fileName=${dto.imageDTOList[0].getImageURL()}|}"
+			                                     th:width="210"
+			                                     th:height="170"
+			                                     >
+			                            </div>
+			                            <div class="col-lg-12" >
+			                                <a th:href="@{/board/read(mno = ${dto.mno}, page = ${result.page})}" style="padding: 10px 15px ">
+			                                    [[${dto.title}]]
+			                                  <br>
+			                                 <span style="font-weight: bold; color: black; font-size: 120%; padding: 0px 15px ">[[${dto.price}]]원</span>
+			                                 
+			                                    <span style="padding: 0px 15px">[[${dto.memberId}]]</span>
+			                                    <br>
+			                                    <span style="padding: 0px 15px">[[${#temporals.format(dto.regDate, 'yyyy/MM/dd')}]]</span>
+			                               </a>
+			                            </div>
+			                        </div>
+			                    </div>
+			                </div>
+			                </a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<br>
+					<ul
+						class="pagination h-100 justify-content-center align-times-center">
+						<li class="page-item" th:if="${result.prev}"><a
+							class="page-link" th:href="@{/board/list(page=${result.start-1)}"
+							tabindex="-1">Prev</a></li>
+
+						<li th:class="'page-item' + ${result.page == page?'active' : ''}"
+							th:each="page : ${result.pageList}"><a class="page-link"
+							th:href="@{/board/list(page = ${page})}"> [[${page}]] </a></li>
+
+						<li class="page-item" th:if="${result.next}"><a
+							class="page-link" th:href="@{/board/list(page=${result.end + 1)}">
+								Next</a></li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+	<!-- ------------------------------------------------------------ -->
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-12">
+				</div>
+			</div>
+		</div>
+	</footer>
+	<script th:inline="javascript">
+		//글 신규 등록 후 스크립트 처리 th:Inline 속성..
+
+			
+		
+		$(document).ready(
+				function() {
+					function checkNote() {
+						$.ajax({
+							type : "GET",
+							url : "/note/check",
+							success : function(data) {
+								if (data) {
+									// 새로운 쪽지가 있을 때 처리
+									$("#note-alert").html(
+											'<a class="nav-link" href="/note/mynotes">대화창<span class="badge badge-danger ml-1">!</span></a>');
+									} else {
+										// 새로운 쪽지가 없을 때 처리
+										$("#note-alert").html(
+												'<a class="nav-link" href="/note/mynotes">대화창</a>');
+												}
+											},
+											error : function(xhr, status, error) {
+												console.log(xhr.responseText);
+											},
+											complete : function() {
+												// 요청을 마친 후 15초 후에 다시 요청
+												setTimeout(checkNote, 15000);
+											}
+										});
+							}
+							checkNote();
+						});
+	</script>
+	<!--로그인 후 로그아웃으로 바뀌는 스크립트-->
+	<script>
+		var userId = "[[${session.loginId}]]";
+		$(document).ready(function() {
+
+			if (userId === "") {
+
+				$('.check').show();
+			} else if (userId !== "") {
+				$('.check2').show();
+			}
+		});
+	</script>
+
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>detail</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">중고마켓</a>
+        <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+                data-target="#navbarNav" data-toggle="collapse" type="button">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/member/signup">Sign Up</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/member/login">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/member/mypage">My Page</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Content -->
+<table>
+    <tr>
+        <th>memberId</th>
+        <th>memberName</th>
+        <th>memberPassword</th>
+        <th>memberPhoneNumber</th>
+        <th>memberRegion</th>
+    </tr>
+
+    <tr>
+        <td th:text="${member.memberId}"></td>
+        <td th:text="${member.memberName}"></td>
+        <td th:text="${member.memberPassword}"></td>
+        <td th:text="${member.memberPhoneNumber}"></td>
+        <td th:text="${member.memberRegion}"></td>
+    </tr>
+</table>
+</div>
+</body>
+</html>

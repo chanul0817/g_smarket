@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>경매 상세</title>
+  <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+  <a class="mt-4" href="/"> <img alt=""
+                                 src="/assets/images/logo.png"
+                                 style="margin-top: 2.3%; padding: 0px">
+  </a>
+  <h1 th:text="${auction.itemName}"></h1>
+  <img th:src="@{|/display?fileName=${auction.imageURL}|}" class="img-fluid" alt="Item Image">
+  <p>현재 입찰가: <span th:text="${auction.currentBid}">0</span>원</p>
+  <p>경매 종료 시간: <span th:text="${#temporals.format(auction.auctionEndTime, 'yyyy-MM-dd HH:mm')}"></span></p>
+
+  <h3>입찰</h3>
+  <form action="/auction/bid" method="post">
+    <input type="hidden" name="auctionId" th:value="${auction.id}">
+    <input type="number" name="bidAmount" placeholder="입찰 금액" class="form-control" required>
+    <button type="submit" class="btn btn-primary">입찰하기</button>
+  </form>
+  <form action="/auction/cancel" method="post">
+    <input type="hidden" name="auctionId" th:value="${auction.id}">
+    <button type="submit" class="btn btn-danger">경매 취소하기</button>
+  </form>
+
+</div>
+<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

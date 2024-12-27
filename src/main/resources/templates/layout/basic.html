@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="setContent(content)">
+    <head>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Simple Sidebar - Start Bootstrap Template</title>
+
+    <title>Simple Sidebar - Start Bootstrap Template</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{/css/simple-sidebar.css}" rel="stylesheet">
+
+    <!-- Bootstrap core JavaScript -->
+    <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+    <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+
+</head>
+
+<body>
+
+<div class="d-flex" id="wrapper">
+
+    <!-- Sidebar -->
+    <div class="bg-light border-right" id="sidebar-wrapper">
+        <div class="sidebar-heading">Start Bootstrap </div>
+        <div class="list-group list-group-flush">
+            <a href="#" class="list-group-item list-group-item-action bg-light">Dashboard</a>
+            <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
+            <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
+            <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
+            <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
+            <a href="#" class="list-group-item list-group-item-action bg-light">Status</a><hr>
+        </div>
+        
+        
+        
+        	 <!-- 카카오 지도 Open API 시작 -->
+        	 
+        	 
+        	 
+	    <Strong><center>Map</center></Strong><br>
+		<!-- 지도 영역 생성 -->
+		
+		
+		<div id="map" style="width:250px;height:200px"></div>
+	 	<!-- 자바스크립트 API 불러오기 /  -->
+		<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=48f6301bb9be5b49ef1aeea540a1eaa5&libraries=services"></script>
+		<!-- 지도 띄우기 -->
+		<script>
+			var container = document.getElementById('map'); // 지도 담을 영역
+			var options = { //지도 생성할 때 옵션
+				center: new kakao.maps.LatLng(37.7398, 127.0473), //지도의 중심좌표값 설정 (의정부역으로 지정)
+				level: 6 //지도 레벨 (확대, 축소 정도)
+			};
+
+			var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+			var prevMarker = null; //이전 마커 객체 변수
+			var prevInfowindow = null; //이전 Info 객체 변수
+
+			
+			//지도에 클릭이벤트 구현, 클릭하면 마지막 파라미터로 넘어온 함수 호출
+			kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
+				//클릭한 위치의 위도, 경도 정보를 가져옴.
+				var latlng = mouseEvent.latLng;
+				
+				//이전 마커 객체가 존재한다면 삭제
+				if (prevMarker !== null){
+					prevMarker.setMap(null);
+					prevMarker = null;
+				}
+				
+				//위와 동일하도록 이전 InfoWindow 객체가 존재한다면 삭제
+				if (prevInfowindow !== null){
+					prevInfowindow.close(null);
+					prevInfowindow = null;
+				}
+				
+				var marker = new kakao.maps.Marker({ position: latlng, map: map });
+				prevMarker = marker; //이전 마커 객체를 저장함
+				
+				//마커위치를 클릭한 위치로 옮기기
+				marker.setPosition(latlng);
+				
+				//Open Weather Map API 불러오기
+				var api_key = '385a3155b6ee0bb00df1afdbab5e3858'; //Open Weather Map의 API_KEY
+				var url = `https://api.openweathermap.org/data/2.5/weather?lat=${latlng.getLat()}&lon=${latlng.getLng()}&appid=${api_key}`;
+				fetch(url)
+					.then(response => response.json())
+    				.then(data => {
+						var weather = data.weather[0];
+						var temp = data.main.temp - 273.15;
+						var message = `날씨: ${weather.description}<br>기온: ${temp.toFixed(1)}°C`;
+						var infowindow = new kakao.maps.InfoWindow({
+							content: message, 
+							position: latlng, 
+							maxWidth: 400
+							});
+						infowindow.open(map, marker);
+						prevInfowindow = infowindow;
+					})
+					.catch(error => console.error(error));
+			});
+			
+			
+			/*맵 컨트롤러*/
+			var mapTypeControl = new kakao.maps.MapTypeControl();//지도타입(일반, 스카이뷰) 컨트롤 생성
+			map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);//컨트롤을 추가해야 지도 위에 표시됨 
+
+			var zoomControl = new kakao.maps.ZoomControl();//지도 확대 축소 제어할 수 있는 줌 컨트롤 생성
+			map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+		</script>	
+		<a href="map">지도 자세히 보기</a>
+		
+			<!-- 카카오 지도 Open API 끝 -->
+	
+	<hr>
+	
+	<!-- 날씨 Open API 시작 -->
+	<!-- 날씨 Open API 끝 -->
+				
+				
+    </div>
+    <!-- /#sidebar-wrapper -->
+
+	
+
+    <!-- Page Content -->
+    <div id="page-content-wrapper">
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+            <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Link</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Dropdown
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container-fluid">
+
+            <th:block th:replace = "${content}"></th:block>
+
+        </div>
+
+    </div>
+    <!-- /#page-content-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+
+
+
+
+<!-- Menu Toggle Script -->
+<script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+</script>
+
+</body>
+</th:block>
+</html>
+

@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<!-- Bootstrap core CSS -->
+<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+<script src="/assets/js/bootstrap.min.js"></script>
+
+<!-- Additional CSS Files -->
+<link href="/assets/css/fontawesome.css" rel="stylesheet">
+<link href="/assets/css/templatemo-cyborg-gaming.css" rel="stylesheet">
+<link href="/assets/css/owl.css" rel="stylesheet">
+<link href="/assets/css/animate.css" rel="stylesheet">
+<link href="https://unpkg.com/swiper@7/swiper-bundle.min.css"
+	rel="stylesheet" />
+
+<meta charset="UTF-8">
+<title>My Notes</title>
+<style>
+.pimg {
+	display: block; /* 이미지를 블록 레벨 요소로 설정하여 가로 중앙 정렬을 할 수 있도록 합니다 */
+	margin: auto;
+	object-fit: cover;
+	width: 100%;
+}
+
+html.open {
+	overflow: hidden;
+}
+
+#menu.open {
+	left: 0px;
+}
+
+.page_cover.open {
+	display: block;
+}
+
+.btn2 {
+	width: 50px;
+	height: 50px;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	z-index: 1;
+	background-image:
+		url("/assets/images/menuopen.png");
+	background-size: 50%;
+	background-repeat: no-repeat;
+	background-position: center;
+	cursor: pointer;
+}
+
+.close2 {
+	width: 50px;
+	height: 50px;
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	background-image:
+		url("/assets/images/menuclose.png");
+	background-size: 50%;
+	background-repeat: no-repeat;
+	background-position: center;
+	cursor: pointer;
+}
+
+#menu {
+	width: 150px;
+	height: 100%;
+	position: fixed;
+	top: 0px;
+	left: -202px;
+	z-index: 10;
+	border: 1px solid #c9c9c9;
+	background-color: white;
+	text-align: center;
+	font-weight: bold;
+	transition: All 0.2s ease;
+	-webkit-transition: All 0.2s ease;
+	-moz-transition: All 0.2s ease;
+	-o-transition: All 0.2s ease;
+	padding-top: 50px;
+	padding-left: 0px;
+	padding-right: 40px;
+}
+
+#menu a {
+	padding: 0;
+	text-decoration: none;
+	font-size: 18px;
+	color: #25a4cd;
+	display: block;
+	transition: 0.3s;
+}
+
+#menu.open {
+	left: -1px;
+}
+
+.page_cover.open {
+	display: block;
+}
+
+.page_cover {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0px;
+	right: 0px;
+	background-color: rgba(0, 0, 0, 0.4);
+	z-index: 4;
+	display: none;
+}
+
+#menu ul {
+	width: 190px;
+	margin: 0;
+	padding: 0;
+}
+
+#menu ul.nav li {
+	position: relative;
+	float: left;
+	width: 78.5%;
+	list-style-type: none;
+	font-size: 18px;
+}
+
+#menu ul.nav li a {
+	display: block;
+	width: 100%;
+	height: 100%;
+	line-height: 50px;
+	text-indent: 20px;
+	text-align: left;
+	color: #2e2eea;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+#menu ul.nav li a:hover {
+	background: #2E2EFE;
+	color: white;
+}
+</style>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".btn2").click(function() {
+			$("#menu,.page_cover,html").addClass("open");
+			window.location.hash = "#open";
+		})
+	})
+
+	window.onhashchange = function() {
+		if (location.hash != "#open") {
+			$("#menu,.page_cover,html").removeClass("open");
+		}
+	};
+
+	$(document).ready(function() {
+		$("#menu ul.sub_mobile").hide();
+		$("#menu ul.nav li").click(function() {
+			$("ul", this).slideToggle("fast");
+		})
+	})
+</script>
+<style>
+header.header-sticky {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 999;
+}
+
+.container .realrow {
+	margin-top: 150px;
+}
+/* 대화 리스트 */
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th, td {
+	text-align: center;
+	padding: 8px;
+}
+
+th {
+	background-color: #F5F5F5;
+	font-weight: bold;
+	color: #333333;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	border-bottom: 2px solid #DDDDDD;
+}
+
+td {
+	border-bottom: 1px solid #DDDDDD;
+	font-size: 14px;
+}
+
+td div {
+	cursor: pointer;
+	color: #333333;
+}
+
+td div:hover {
+	background-color: #F5F5F5;
+}
+
+/* 대화 모달 */
+.modal-dialog {
+	margin: 5% auto;
+	max-width: 900px;
+	display: block;
+}
+
+.modal-header {
+	border-bottom: none;
+}
+
+.modal-title {
+	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+	color: #333333;
+}
+
+.modal-body {
+	padding: 20px 0;
+	max-height: 500px;
+	overflow-y: auto;
+	scrollbar-width: thin;
+	scrollbar-color: #DDDDDD #F5F5F5;
+}
+
+.modal-body::-webkit-scrollbar {
+	width: 10px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+	background-color: #F5F5F5;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+	background-color: #DDDDDD;
+	border-radius: 10px;
+	border: 2px solid #F5F5F5;
+}
+
+.right {
+	text-align: right;
+}
+
+.left {
+	text-align: left;
+}
+
+.left .time {
+	display: inline-block;
+	margin-left: 20px;
+	text-align: left;
+}
+
+.right .time {
+	display: inline-block;
+	margin-right: 10px;
+	text-align: right;
+}
+
+.right .message {
+	display: inline-block;
+	margin-right: 30px;
+}
+
+.my-message .time {
+	text-align: right;
+}
+
+.conversation-list {
+	list-style: none;
+	padding: 100;
+	margin: 0;
+}
+
+.conversation-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.conversation-item {
+	padding: 5px;
+	border-radius: 5px;
+	margin-bottom: 5px;
+	word-break: break-word;
+}
+
+.conversation-item.left {
+	background-color: #f0f0f0;
+	text-align: left;
+}
+
+.conversation-item.right {
+	background-color: #3d85c6;
+	color: #fff;
+	text-align: right;
+}
+
+.conversation-item span {
+	display: block;
+}
+
+.conversation-item .time {
+	font-size: 0.8rem;
+	margin-top: 5px;
+	font-style: italic;
+}
+</style>
+</head>
+<body>
+	<header class="header-area header-sticky">
+
+		<div class="container">
+
+			<div class="row">
+
+				<div class="col-12">
+
+					<nav class="main-nav">
+
+
+						<!-- ***** Logo Start ***** -->
+						<a class="mt-4" href="/"> <img alt=""
+							src="/assets/images/logo.png"
+							style="margin-top: 2.3%; padding: 0px">
+						</a>
+						<!-- ***** Logo End ***** -->
+						<!-- ***** Search End ***** -->
+						<form action="/board/list" method="get" id="searchForm"
+							style="margin: 3% 0% 0% 15%; flex-basis: 40%;">
+							<div class="input-group">
+								<input id='searchText' type="hidden" name="page" value="1"
+									onkeypress="handle">
+								<div class="input-group-prepend" value="tcw"
+									th:selected="${pageRequestDTO.type =='tcw'}">
+
+								</div>
+
+								</ul>
+								<input class="form-control" name="keyword"
+									th:value="${pageRequestDTO.keyword}" style="width: 40%"
+									placeholder="필요한 물품을 검색하세요!">
+							</div>
+						</form>
+						<!-- ***** Search End ***** -->
+						<!-- ***** Menu Start ***** -->
+
+						<ul class="nav" style="margin: 2.3% 0% 0% 0%; flex-basis: 80%;">
+						<li class="nav-item"><a class="nav-link" href="/">Home</a>
+							</li>
+							<li class="nav-item"><a class="nav-link" href="/board/mygoods">내가 쓴 글</a>
+							</li>
+							
+							<li class="nav-item check2" style="display: none;"><a
+								class="nav-link" href="/board/wishlist">찜목록</a></li>
+							<li class="nav-item check" style="display: none;"><a
+								class="nav-link" href="/member/signup">회원가입</a></li>
+							<li class="nav-item check" style="display: none;"><a
+								class="nav-link" href="/member/login">로그인</a></li>
+							<li class="nav-item check2" style="display: none;"><a
+								class="nav-link" href="/member/logout">로그아웃</a></li>
+							<li class="nav-item check2" style="display: none;"><a
+								class="nav-link" href="/member/mypage">[[${session.loginId}]]
+									<img alt="" src="/assets/images/profile-header.jpg">
+							</a></li>
+						</ul>
+						<a class='menu-trigger'> <span>Menu</span>
+						</a>
+					</nav>
+				</div>
+			</div>
+		</div>
+		<!-- 햄버거 메뉴 추가 시작  -->
+		<div class="container" >
+			<div class="row" >
+
+				<div class="col-12" >
+
+					<div class="btn2"></div>
+					<div onclick="history.back();" class="page_cover"></div>
+
+					<div id="menu">
+						<ul class="nav">
+							<li><a href="/board/list?page=1&category=남성의류">남성의류</a></li>
+							<li><a href="/board/list?page=1&category=여성의류">여성의류</a></li>
+							<li><a href="/board/list?page=1&category=악세서리">악세서리</a></li>
+							<li><a href="/board/list?page=1&category=전자기기">전자기기</a></li>
+							<li><a href="/board/list?page=1&category=기프티콘">기프티콘</a></li>
+							<li><a href="/board/list?page=1&category=생활용품">생활용품</a></li>
+							<li><a href="/board/list?page=1&category=스포츠">스포츠</a></li>
+							<li><a href="/board/list?page=1&category=음반/악기">음반/악기</a></li>
+							<li><a href="/board/list?page=1&category=도서">도서</a></li>
+							
+						</ul>
+						<div onclick="history.back();" class="close2"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 햄버거 메뉴 추가 끝  -->
+	</header>
+	<div class="container">
+		<div class="row realrow">
+			<div class="col-12">
+				<table>
+					<thead>
+						<tr>
+							<th>구매자</th>
+							<th>판매자</th>
+							<th>최근 대화 내용</th>
+							<th>시간</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="conversation : ${conversationList}"
+							th:class="${conversation[conversation.size()-1].checked} ? '0' : '1'">
+							<td th:text="${conversation[0].sender}"></td>
+							<td th:text="${conversation[0].receiver}"></td>
+							<td><span
+								th:if="${conversation[conversation.size()-1].checked == false}"
+								class="badge badge-danger ml-1 new-message">!</span>
+								<div class="clickable conversation-preview"
+									th:text="${conversation[conversation.size()-1].content}"
+									th:data-target="'#noteModal' + ${conversation[0].sender} + ${conversation[0].receiver}">
+								</div></td>
+							<td
+								th:text="${#temporals.format(conversation[conversation.size()-1].sendDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!-- 대화 모달, 대화 내용을 보여준다 -->
+	<th:block th:each="conversation : ${conversationList}">
+		<div class="modal fade"
+			th:id="'noteModal' + ${conversation[0].sender} + ${conversation[0].receiver}"
+			tabindex="-1" role="dialog"
+			aria-labelledby="'noteModalLabel' + ${conversation[0].sender} + ${conversation[0].receiver}"
+			aria-hidden="true" th:data-note-sender="${conversation[0].sender}"
+			th:data-note-receiver="${conversation[0].receiver}">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title"
+							th:text="${conversation[0].sender} + ' - ' + ${conversation[0].receiver}"
+							th:id="'noteModalLabel' + ${conversation[0].sender} + ${conversation[0].receiver}"></h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">×</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<ul class="conversation-list">
+							<li th:each="note : ${conversation}">
+								<!-- 대화창에서 왼쪽 오른쪽 정렬 설정해주기  -->
+								<div class="conversation-item"
+									th:classappend="${note.sender} == ${sessionMember.memberId} ? 'right' : 'left'">
+									<span
+										th:text="${note.sender} != ${sessionMember.memberId} ? ${note.sender} + ' : ' : ''"></span>
+									<span
+										th:classappend="${note.sender} == ${sessionMember.memberId} ? 'right time' : 'left time'"
+										th:if="${note.sender} == ${sessionMember.memberId}"
+										th:text="${#temporals.format(note.sendDate, 'MM-dd HH:mm')}"></span>
+									<span
+										th:classappend="${note.sender} == ${sessionMember.memberId} ? 'right message' : 'left message'"
+										th:text="${note.content}"></span> <span
+										th:classappend="${note.sender} != ${sessionMember.memberId} ? 'right time' : 'left time'"
+										th:if="${note.sender} != ${sessionMember.memberId}"
+										th:text="${#temporals.format(note.sendDate, 'MM-dd HH:mm')}"></span>
+								</div>
+							</li>
+						</ul>
+						<div class="modal-footer">
+							<input type="hidden" id="sender" name="sender"
+								th:value="${sessionMember.memberId}"> <input
+								type="hidden" id="receiver" name="receiver"
+								th:value="${conversation[0].sender != sessionMember.memberId ? conversation[0].sender : conversation[0].receiver}">
+							<div class="form-group">
+								<label for="noteContent">내용:</label>
+								<textarea class="form-control noteContent" required></textarea>
+							</div>
+							<button class="btn btn-primary note" type="button">전송</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</th:block>
+</body>
+<script>
+$(document)
+	.ready(
+		function() {
+		$('table tbody tr').click(function() {
+			var modalId = $(this).find('.conversation-preview').data('target');
+				var modal = $(modalId);
+				modal.modal('show');
+				// 대화목록 클릭 시 쪽지 확인 처리
+				$.ajax({
+						url : '/note/'+ "check/"+ modal.data('note-sender')+ "-"
+								+ modal.data('note-receiver'),
+								method : 'PUT',
+								success : function(data) {
+									if (data.result === 'success') {
+										console.log('채팅이 확인되었습니다.');
+										// 새로운 쪽지 목록을 불러오는 등의 처리
+									} else {
+										console.log('채팅 확인에 실패하였습니다.');
+									}
+								},
+								error : function(xhr,status, error) {
+								}
+							});
+
+		modal.find(".note").click(function() {
+			var content = modal.find(".noteContent").val();
+						var sender = modal.find(".modal-title").text().split(" - ")[0]; // 대화 상대의 이름을 가져옴
+						var receiver = modal.find(".modal-title").text().split(" - ")[1]; // 대화 상대의 이름을 가져옴
+						var sessionMemberId = "[[${sessionMember.memberId}]]";
+
+						if (sessionMemberId != sender) {
+							sender = modal.find(".modal-title").text().split(" - ")[1];
+							receiver = modal.find(".modal-title").text().split(" - ")[0];
+
+							$.ajax({
+								type : "POST",
+								url : "notes",
+								data : JSON
+								.stringify({
+									"sender" : sender,
+									"receiver" : receiver,
+									"content" : content
+									}),
+									contentType : "application/json",
+									success : function(data) {
+										alert(data);
+										location.reload();
+										},
+										error : function(xhr,status,error) {
+											console.log(xhr.responseText);
+										}
+									});
+						} else {
+							sender = modal.find(".modal-title").text().split(" - ")[0]; // 대화 상대의 이름을 가져옴
+							receiver = modal.find(".modal-title").text().split(" - ")[1]; // 대화 상대의 이름을 가져옴
+							$.ajax({
+								type : "POST",
+								url : "notes",
+								data : JSON
+								.stringify({
+									"sender" : sender,
+									"receiver" : receiver,
+									"content" : content
+									}),
+									contentType : "application/json",
+										success : function(data) {
+											alert(data);
+											location.reload();
+											},
+										error : function(xhr,status,error) {
+											console.log(xhr.responseText);
+											}
+											});
+							}
+						});
+		});
+		});
+
+	$(document).ready(function() {
+		// 모든 conversation-item 요소를 선택하여 반복문 수행
+		$(".conversation-item").each(function() {
+			// 현재 요소의 sender 값을 확인
+			var sender = $(this).find("span:first-child").text();
+			if (sender === "[[${sessionMember.memberId}]]") {
+				// 내가 보낸 메시지인 경우
+				$(this).addClass("right-message");
+			} else {
+				// 상대방이 보낸 메시지인 경우
+				$(this).addClass("left-message");
+			}
+		});
+	});
+	var userId = "[[${session.loginId}]]";
+	$(document).ready(function() {
+
+		if (userId === "") {
+
+			$('.check').show();
+		} else if (userId !== "") {
+			$('.check2').show();
+		}
+	});
+	/*
+	$(document).ready(function() {
+	setInterval(function() {
+	    $.ajax({
+	        type: "GET",
+	        url: "/note/check",
+	        success: function(data) {
+	            if (data) {
+	                // 새로운 쪽지가 있을 때 처리
+	                console.log("새로운 쪽지가 도착했습니다!");
+	            }
+	        },
+	        error: function(xhr, status, error) {
+	            console.log(xhr.responseText);
+	        }
+	    });
+	}, 15000);
+	});
+	 */
+</script>
+</html>

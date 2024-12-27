@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<meta charset="UTF-8">
+
+	<title>list</title>
+	<link crossorigin="anonymous"
+		  href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+		  rel="stylesheet">
+	<link
+			href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+			rel="stylesheet">
+
+	<!-- Bootstrap core CSS -->
+	<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+	<!-- Additional CSS Files -->
+	<link href="/assets/css/fontawesome.css" rel="stylesheet">
+	<link href="/assets/css/templatemo-cyborg-gaming.css" rel="stylesheet">
+	<link href="/assets/css/owl.css" rel="stylesheet">
+	<link href="/assets/css/animate.css" rel="stylesheet">
+	<link href="https://unpkg.com/swiper@7/swiper-bundle.min.css"
+		  rel="stylesheet" />
+
+
+</head>
+
+
+<body>
+
+
+<header class="header-area header-sticky">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<nav class="main-nav">
+					<!-- ***** Logo Start ***** -->
+					<a class="mt-4" href="/"> <img alt=""
+												   src="/assets/images/logo.png"
+												   style="margin-top: 2.3%; padding: 0px">
+					</a>
+					<!-- ***** Logo End ***** -->
+
+					<!-- ***** Menu Start ***** -->
+
+					<ul class="nav" style="margin: 2.3% 0% 0% 0%; flex-basis: 100%;">
+						<li><a class="active" href="/">Home</a></li>
+						<li class="check" style="display: none"><a
+								href="/member/login">로그인</a></li>
+						<li class="check2" style="display: none"><a
+								href="/member/logout">로그아웃</a></li>
+
+						</a>
+						</li>
+					</ul>
+
+
+
+
+				</nav>
+			</div>
+		</div>
+	</div>
+</header>
+<!-- ***** Header Area End ***** -->
+<style>
+	.checkbutton {
+		margin-left: 17%;
+		margin-top: 18%;
+		font-size: 14px;
+		color: #fff;
+		background-color: #4400ff;
+		padding: 12px 30px;
+		display: inline-block;
+		border-radius: 25px;
+		border: none;
+		font-weight: 400;
+		text-transform: capitalize;
+		letter-spacing: 0.5px;
+		transition: all .3s;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.checkbutton:hover {
+		background-color: #fff;
+		color: #4400ff;
+	}
+
+	.checkbutton2 {
+		float: right;
+		font-size: 14px;
+		color: #fff;
+		background-color: #4400ff;
+		padding: 12px 30px;
+		display: inline-block;
+		border-radius: 25px;
+		border: none;
+		font-weight: 400;
+		text-transform: capitalize;
+		letter-spacing: 0.5px;
+		transition: all .3s;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.checkbutton:hover2 {
+		background-color: #fff;
+		color: #4400ff;
+	}
+</style>
+<!-- Content -->
+<div class="container">
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="page-content">
+
+				<!--action 속성 : form 에 작성한 데이터를 어디로 보낼지 지정-->
+				<form action="/member/signup" method="post"
+					  oninput="validateForm()">
+					<!--    name 속성: 서버로 전송할 때 변수 이름의 역할-->
+					<h2 class="h2">회원가입</h2>
+					<br>
+					<div class="row">
+						<div class="col-10">
+							<label for="memberId">아이디&nbsp&nbsp</label><span
+								class="error-message1" style="color: red;"></span> <input
+								class="form-control" id="memberId" maxlength="20" minlength="8"
+								name="memberId" pattern="[a-zA-Z][a-zA-Z0-9]+" required
+								type="text">
+						</div>
+						<div class="col-2">
+							<button class="checkbutton" id="overlappedID" type="button">중복확인</button>
+						</div>
+					</div>
+					<span id="olmessage"></span>
+
+					<style>
+						.olmessagef {
+							color: red;
+							font-style: italic;
+						}
+
+						.olmessaget {
+							color: blue;
+							font-style: italic;
+						}
+					</style>
+
+					<label for="memberPassword">비밀번호&nbsp&nbsp</label><span
+						class="error-message2" style="color: red;"></span> <input
+						class="form-control" id="memberPassword" maxlength="20"
+						minlength="8" name="memberPassword" required type="password"><br>
+
+					<label for="memberName">이름&nbsp&nbsp</label><span
+						class="error-message3" style="color: red;"></span> <input
+						class="form-control" id="memberName" maxlength="6" minlength="2"
+						name="memberName" pattern="[가-힣]+" required type="text"><br>
+
+					<div class="row">
+						<div class="col-10">
+							<label for="memberEmail">이메일&nbsp;&nbsp;</label>
+							<span class="error-message4" style="color: red;"></span>
+							<input
+									class="form-control"
+									id="memberEmail"
+									name="memberEmail"
+									placeholder="abc123@gmail.com"
+									required
+									pattern="[a-zA-Z0-9._%+-]+@+[a-zA-Z0-9._%+-]+\.[a-z]{2,}"
+									type="email"
+							/>
+							<br />
+						</div>
+						<div class="col-2">
+							<button
+									class="checkbutton"
+									id="sendVerificationCode"
+									type="button"
+							>
+								인증코드 발송
+							</button>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-10">
+							<label for="verificationCode">인증코드&nbsp;&nbsp;</label>
+							<input
+									class="form-control"
+									id="verificationCode"
+									name="verificationCode"
+									placeholder="인증 코드를 입력하세요"
+									required
+									type="text"
+							/>
+						</div>
+						<div class="col-2">
+							<button
+									class="checkbutton"
+									id="verifyCode"
+									type="button"
+							>
+								인증확인
+							</button>
+						</div>
+					</div>
+					<label for="memberPhoneNumber">전화번호</label>
+					<input class="form-control" id="memberPhoneNumber" name="memberPhoneNumber" placeholder="010-1234-5678" required type="tel"><br>
+
+					<input class="checkbutton2" disabled type="submit" value="회원가입">
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- JavaScript -->
+<script>
+	// 폼 제출 시 입력값 검증
+	$('form').submit(function (event) {
+		event.preventDefault();
+
+		const formData = {
+			memberId: $('#memberId').val(),
+			memberPassword: $('#memberPassword').val(),
+			memberName: $('#memberName').val(),
+			memberEmail: $('#memberEmail').val(),
+			memberPhoneNumber: $('#memberPhoneNumber').val(), // 전화번호 값 확인
+		};
+
+
+		// 전화번호가 비어있지 않은지 확인
+		if (!formData.memberPhoneNumber) {
+			alert('전화번호를 입력하세요.');
+			return;
+		}
+
+		$.ajax({
+			url: '/member/signup',
+			type: 'POST',
+			contentType: 'application/json',
+			data: JSON.stringify(formData),
+			success: function (response) {
+				alert('회원가입 성공: ' + response.message);
+			},
+			error: function (error) {
+				alert('회원가입 실패: ' + error.responseText);
+			}
+		});
+	});
+
+	function validateForm() {
+		const form = document.querySelector('form');
+		const submitButton = document.querySelector('input[type=submit]');
+		const memberPhoneNumber = document.querySelector('#memberPhoneNumber').value;
+
+		if (!memberPhoneNumber) {
+			alert('전화번호를 입력하세요.');
+			return;
+		}
+
+		submitButton.disabled = !form.checkValidity();
+	}
+
+	// 이메일 인증 코드 전송
+	$('#sendVerificationCode').click(function () {
+		const email = $('#memberEmail').val();
+		if (!email) {
+			alert('이메일을 입력하세요.');
+			return;
+		}
+		$.ajax({
+			url: '/mail/sendVerificationEmail',
+			type: 'POST',
+			data: { email },
+			success: function (response) {
+				if (response.success) {
+					alert(response.message);
+				} else {
+					alert('오류 발생: ' + response.error);
+				}
+			},
+			error: function () {
+				alert('이메일 전송 중 오류가 발생했습니다.');
+			}
+		});
+	});
+
+	// 인증 코드 확인
+	$('#verificationCode').on('change', function () {
+		const email = $('#memberEmail').val();
+		const verificationCode = $(this).val();
+
+		$.ajax({
+			url: '/mail/verifyCode',
+			type: 'POST',
+			contentType: 'application/json',
+			data: JSON.stringify({ email, userCode: verificationCode }),
+			success: function (data) {
+				if (data.success) {
+					alert(data.message);
+					$('input[type=submit]').prop('disabled', false); // 회원가입 버튼 활성화
+				} else {
+					alert(data.message);
+					$('input[type=submit]').prop('disabled', true); // 회원가입 버튼 비활성화
+				}
+			},
+			error: function () {
+				alert('인증 코드 확인 중 오류가 발생했습니다.');
+			}
+		});
+	});
+</script>
+<script>
+	function validateForm() {
+		const form = document.querySelector('form');
+		const submitButton = document.querySelector('input[type=submit]');
+		const memberId = document.querySelector('#memberId').value;
+		const errorMessage1 = document.querySelector('.error-message1');
+		const memberPassword = document.querySelector('#memberPassword').value;
+		const errorMessage2 = document.querySelector('.error-message2');
+		const memberName = document.querySelector('#memberName').value;
+		const errorMessage3 = document.querySelector('.error-message3');
+		const memberEmail = document.querySelector('#memberEmail').value;
+		const errorMessage4 = document.querySelector('.error-message4');
+
+		if (/^[a-zA-Z][a-zA-Z0-9]+$/.test(memberId) && memberId.length >= 8 && memberId.length <= 20) {
+			errorMessage1.innerHTML = '';
+		} else {
+			errorMessage1.innerHTML = '아이디는 영어 포함 8~20자 이어야 합니다.';
+		}
+
+		if (memberPassword.length >= 8 && memberPassword.length <= 20) {
+			errorMessage2.innerHTML = '';
+		} else {
+			errorMessage2.innerHTML = '8~20자 이어야 합니다.';
+		}
+
+		if (/^[\uac00-\ud7a3]{2,6}$/.test(memberName)) {
+			errorMessage3.innerHTML = '';
+		} else {
+			errorMessage3.innerHTML = '이름은 한글 2~6자 이어야 합니다.';
+		}
+
+		if (form.checkValidity()) {
+			submitButton.disabled = false;
+		} else {
+			submitButton.disabled = true;
+		}
+	}
+
+	$('#overlappedID').click(function() {
+		var memberId = $('#memberId').val();
+		$.ajax({
+			url : '/member/idCheck',
+			type : 'GET',
+			data : { id : memberId },
+			success : function(data) {
+				if (data === true) {
+					alert('중복되거나 사용할 수 없는 ID입니다.');
+				} else {
+					alert('사용 가능한 ID입니다.');
+				}
+			},
+			error : function() {
+				alert('중복 ID 검사 중 오류가 발생함.');
+			}
+		});
+	});
+
+</script>
+
+<script>
+	var userId = "[[${session.loginId}]]";
+	$(document).ready(function() {
+		if (userId === "") {
+			$('.check').show();
+		} else if (userId !== "") {
+			$('.check2').show();
+		}
+	});
+</script>
+</body>
+</html>

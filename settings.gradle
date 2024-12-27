@@ -1,0 +1,10 @@
+pluginManagement {
+	repositories {
+		maven { url 'https://repo.spring.io/milestone' }
+		maven { url 'https://repo.spring.io/snapshot' }
+		mavenCentral() // Maven Central을 기본 저장소로 설정
+		gradlePluginPortal()
+	}
+}
+
+rootProject.name = 'RealBoard' // 프로젝트 이름 설정

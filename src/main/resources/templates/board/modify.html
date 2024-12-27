@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta charset="UTF-8">
+
+    <title>read</title>
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
+
+    <!-- Bootstrap core CSS -->
+    <link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <script src="/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Additional CSS Files -->
+    <link href="/assets/css/fontawesome.css" rel="stylesheet">
+    <link href="/assets/css/templatemo-cyborg-gaming.css" rel="stylesheet">
+    <link href="/assets/css/owl.css" rel="stylesheet">
+    <link href="/assets/css/animate.css" rel="stylesheet">
+    <link href="https://unpkg.com/swiper@7/swiper-bundle.min.css" rel="stylesheet"/>
+    
+          <style>
+            .uploadResult {
+                width: 100%;
+                background-color: #c0c0c0;
+                margin-top: 10px;
+            }
+
+            .uploadResult ul {
+                display: flex;
+                flex-flow: row;
+                justify-content: center;
+                align-items: center;
+                vertical-align: top;
+                overflow: auto;
+            }
+
+            .uploadResult ul li {
+                list-style: none;
+                padding: 10px;
+                margin-left: 2em;
+            }
+
+            .uploadResult ul li img {
+                width: 100px;
+            }
+            
+            .main-button button {
+			  font-size: 14px;
+			  color: #fff;
+			  background-color: #4400ff;
+			  padding: 12px 30px;
+			  display: inline-block;
+			  border-radius: 25px;
+			  border:none;
+			  font-weight: 400;
+			  text-transform: capitalize;
+			  letter-spacing: 0.5px;
+			  transition: all .3s;
+			  position: relative;
+			  overflow: hidden;
+			}
+			
+			.main-button button:hover {
+			  background-color: #fff;
+			  color: #4400ff;
+			}
+           
+        </style>
+    
+</head>
+<body>
+<header class="header-area header-sticky">
+<div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+                <!-- ***** Logo Start ***** -->
+		<a class="mt-4" href="/"  >
+		<img alt="" src="/assets/images/logo.png" style="margin-top:2.3%; padding:0px">
+		</a>
+		<!-- ***** Logo End ***** -->
+		 
+<!-- ***** Menu Start ***** -->
+
+        <ul class="nav" style="margin:2.3% 0% 0% 0%;flex-basis: 100%; ">
+              <li>
+              	<a class="active" href="/">Home</a></li>
+		              <li class="check1" style="display:none"><a href="/member/signup">회원가입</a></li>
+		              <li class="check1" style="display:none"><a href="/member/login">로그인</a></li>
+		              <li class="check2" style="display:none"><a href="/member/logout">로그아웃</a></li>
+		              <li class="check2" style="display:none"><a href="/member/mypage">[[${session.loginId}]]
+		              <img alt="" src="/assets/images/profile-header.jpg">
+              	</a>
+              </li>
+        </ul>
+
+       
+
+        
+		</nav>
+            </div>
+        </div>
+    </div>
+</header>
+<div class="container" style="margin-top:7%">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+
+               <form action="/board/modify" method="post">
+
+                  <!--페이지 번호  -->
+                  <input type="hidden" name="page" th:value="${requestDTO.page}">
+                  <input type="hidden" name="type" th:value="${requestDTO.type}">
+                  <input type="hidden" name="keyword"
+                     th:value="${requestDTO.keyword}">
+
+
+                  <div class="form-group">
+                     <label>글번호</label> <input type="text" class="form-control"
+                        name="mno" th:value="${dto.mno}" readonly>
+                  </div>
+
+                  <div class="form-group">
+                     <label>제목</label> <input type="text" class="form-control"
+                        name="title" th:value="${dto.title}" required>
+                  </div>
+                  <div class="form-group">
+                     <label>가격</label> <input type="text" class="form-control"
+                        name="price" placeholder="숫자만 입력해주세요." th:value="${dto.price}" pattern="\d+" required>
+                  </div>
+                  <!-- 이미지 파일 삽입 폼 시작 -->
+                  <div class="form-group fileForm">
+                     <label>상품 이미지</label>
+                     <div class="custom-file">
+                        <input type="file" class="custom-file-input files"
+                           id="fileInput" multiple> <label
+                           class="custom-file-label" data-browse="Browse"></label>
+                     </div>
+                  </div>
+                  <!-- 이미지 파일 삽입 폼 끝 -->
+
+                  <!-- 이미지 파일 박스 폼 시작 -->
+                  <div class="box"></div>
+                  <!-- 이미지 파일 박스 폼 끝 -->
+                  <div class="form-group">
+                     <label>상품 설명</label>
+                     <textarea class="form-control" rows="5" name="content" required>[[${dto.content}]]</textarea>
+                  </div>
+
+            
+            <label >카테고리</label>
+            <div class="form-group">
+                <div class="input-group-prepend">
+                    <select class="custom-select" name="category">
+                        <option th:value="${dto.category}">[[${dto.category}]]</option>
+                        			<option value="남성의류">남성의류</option>
+									<option value="여성의류">여성의류</option>
+									<option value="악세서리">악세서리</option>
+									<option value="전자기기">전자기기</option>
+									<option value="기프티콘">기프티콘</option>
+									<option value="생활용품">생활용품</option>
+									<option value="스포츠">스포츠</option>
+									<option value="음반/악기">음반/악기</option>
+									<option value="도서">도서</option>
+                        
+                    </select>
+                </div> 
+            </div>
+            
+               <div class="form-group">
+                     <label>거래 희망 장소</label> <input type="text" class="form-control" id="search"  th:value="${dto.location}"
+                        name="location" placeholder="정확한 도로명 또는 지번 주소를 입력해주세요. ex)의정부역(X) / 의정부동 275-3(O) / 의정부시 평화로 525(O)" required>
+                           <button type="button" onclick="searchAddress()">검색</button>
+                  </div>
+                   <!-- 카카오 지도 Open API 시작 -->
+                     <!-- 지도 영역 생성 -->
+                     <center>
+                        <div id="map" style="width: 600px; height: 240px"></div>
+                        <div id="searchBox">
+                        </div>
+                       
+      <a href="map" class="main-button"><i>지도 자세히 보기</i></a>
+      </center>
+                     <!-- 카카오 지도 Open API 끝 -->
+                  <div class="form-group">
+                     <label>작성자</label> <input type="text" class="form-control"
+                        name="memberId" th:value="${dto.memberId}" required readonly>
+                  </div>
+                  <div class="form-group">
+                     <label>등록 날짜</label> <input type="text" class="form-control"
+                        th:value="${#temporals.format(dto.regDate, 'yyyy/MM/dd HH:mm:ss')}"
+                        readonly>
+                  </div>
+                  <div class="form-group">
+                     <label>수정 날짜</label> <input type="text" class="form-control"
+                        th:value="${#temporals.format(dto.modDate, 'yyyy/MM/dd HH:mm:ss')}"
+                        readonly>
+                  </div>
+
+               </form>
+        
+  
+
+
+
+<div class="uploadResult">
+            <ul>
+                <li th:each="boardImage: ${dto.imageDTOList}" th:data-file="${boardImage.getThumbnailURL()}">
+                    <img th:if="${boardImage.path != null}"
+                     th:src="|/display?fileName=${boardImage.getThumbnailURL()}|" >
+                     <button onclick="deleteThumbnail(this)" th:attr="data-file=${boardImage.getThumbnailURL()}, data-file=${boardImage.getImageURL()}"
+                     >X</button>
+                   
+                </li>
+            </ul>
+        </div> 
+
+
+			<div class="main-button" style="margin-top:3%">
+				<button class="modifyBtn">
+					수정하기
+				</button>
+				<button class="removeBtn">
+		  			삭제하기
+				</button> 
+			<div>
+          
+
+       </nav>
+            </div>
+        </div>
+    </div>
+    
+    
+    <footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Copyright © 2023 <a href="#">윤서가 (참조해서) 만들었습니다</a> Company. All rights reserved.
+
+                    <br>우후핫 <a href="/" target="_blank"
+                                   title="윤서의 험난한 디자인 도전기">윤서의</a> 험난한 디자인 도전기 <a
+                            href="/" target="_blank"></a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+        <script>
+    var userId = "[[${session.loginId}]]";
+    $(document).ready(function () {
+
+        if (userId === "") {
+
+            $('.check1').show();
+        } else if (userId !== "") {
+            $('.check2').show();
+        }
+    });
+</script>
+		<script th:inline="javascript">
+		
+		
+		$(document).ready(function() {
+			  // 작성자의 아이디를 가져와 변수에 저장합니다.
+			  var writerId = [[${dto.memberId}]];
+			  
+			  // 로그인한 사용자의 아이디를 가져옵니다.
+			  // 이 예시에서는 세션에 저장된 사용자 아이디를 가져옵니다.
+			  var userId = [[${sessionMember.memberId}]];
+			  
+			  // 작성자와 로그인한 사용자가 일치하는 경우 수정 버튼과 삭제 버튼을 표시합니다.
+			  if (writerId === userId) {
+			    $('.modifyBtn').show();
+			    $('.removeBtn').show();
+			  }
+			});
+		
+		
+		//JQuery에서 위에서 선언된 폼 객체를 바인딩 합니다.
+		var actionForm = $("form")
+		
+		//해당 폼에서 특정 CSS 클래스를 지정해서, 클릭이 발생하면 콜백함수를 지정하고
+		//이벤트를 수행해보도록 합니다.
+		$(".removeBtn").click(function(){
+			//위에서 지정한 폼객체(actionForm)의 속성을 조정해볼게요
+			//폼객체이기 때문에 JQuery 보면 많은 속성과 메서드가 존재하는데
+			//지금은 속성 메서드 attr()을 이용해서 우리가 폼 속성에 주는 값을 변경해 볼게요
+			if(confirm("글을 삭제하시겠습니까?")){
+			actionForm
+			.attr("action","/board/remove")
+			.attr("method","post");
+			actionForm.submit();}
+		});
+	
+		
+		/////여기서부터 추가!!!! ★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★★
+		$(document).ready(function(e){
+			var regex = new RegExp("(.*?)\.(exe|sh|zip|alz|tiff)$");
+			var maxSize = 10485760; // 10mb
+			
+			function checkExtension(fileName, fileSize){
+				
+				if(fileSize >= maxSize){
+					alert("파일 사이즈 초과");
+					return false;
+				}
+				
+				if(regex.test(fileName)){
+					alert("해당 종류의 파일은 업로드 할 수 없습니다.");
+					return false;
+				}
+				return true;
+			}
+			
+			$(".custom-file-input").on("change", function() {
+
+	            var fileName = $(this).val().split("\\").pop();
+	            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+
+	            var formData = new FormData();
+
+	            var inputFile = $(this);
+
+	            var files = inputFile[0].files;
+
+	            var appended = false;
+
+	            for (var i = 0; i < files.length; i++) {
+
+	                if(!checkExtension(files[i].name, files[i].size) ){
+	                    return false;
+	                }
+
+	                console.log(files[i]);
+	                formData.append("uploadFiles", files[i]);
+	                appended = true;
+	            }
+
+	            //upload를 하지 않는다.
+	            if (!appended) {return;}
+
+	            for (var value of formData.values()) {
+	                console.log(value);
+	            }
+
+	            //실제 업로드 부분
+	            //upload ajax
+	            $.ajax({
+	                url: '/uploadAjax',
+	                processData: false,
+	                contentType: false,
+	                data: formData,
+	                type: 'POST',
+	                dataType:'json',
+	                success: function(result){
+	                    console.log(result);
+	                    showResult(result);
+	                },
+	                error: function(jqXHR, textStatus, errorThrown){
+	                    console.log(textStatus);
+	                }
+	            }); //$.ajax
+			}); //end change event
+			
+			function showResult(uploadResultArr){
+
+	            var uploadUL = $(".uploadResult ul");
+
+	            var str ="";
+
+	            $(uploadResultArr).each(function(i, obj) {
+
+	                str += "<li data-name='" + obj.fileName + "' data-path='"+obj.folderPath+"' data-uuid='"+obj.uuid+"'>";
+	                str + " <div>";
+	                str += "<button type='button' data-file=\'" + obj.imageURL + "\' "
+	                str += "class='btn-warning btn-sm'>X</button><br>";
+	                str += "<img src='/display?fileName=" + obj.thumbnailURL + "'>";
+	                str += "</div>";
+	                str + "</li>";
+	            });
+
+	            uploadUL.append(str);
+	        }
+			
+			$(".uploadResult").on("click", "li button", function(e){
+				
+				var targetFile = $(this).data("file");
+				
+				var targetLi = $(this).closest("li");
+				if(confirm("이미지를 삭제하시겠습니까?")){
+				$.ajax({
+				    url: "/removeFile",
+				    data : {fileName: targetFile},
+				    dataType : "text",
+				    type: "POST",
+				    success: function(result) {
+				        targetLi.remove();
+				    },
+				    error: function(xhr, status, error) {
+				        alert("파일 삭제에 실패하였습니다. 다시 시도해주세요.");
+				        console.log(xhr.responseText);
+				    }
+				}
+				);//end of ajax
+				}
+				else{
+					
+				}
+			})
+			
+			//prevent submit
+            $(".modifyBtn").on("click", function(e) {
+          	// 이미지가 선택되지 않은 경우
+          	
+          	  if ($(".uploadResult li").length === 0) {
+          	    e.preventDefault();
+          	    alert("이미지를 등록해주세요.");
+          	    return;
+          	  }
+          	
+          	$(document).ready(function() {
+                var checkCategory = [[${dto.category}]];
+                if (checkCategory === "전자기기") {
+                    $('.echeck').hide();
+                }else if(checkCategory === "의류"){
+                   $('.ccheck').hide();
+                }else if(checkCategory === "기프티콘"){
+                   $('.gcheck').hide();
+                }
+             });
+				
+                var str = "";
+
+                $(".uploadResult li").each(function(i,obj){
+                    var target = $(obj);
+
+                    str += "<input type='hidden' name='imageDTOList["+i+"].imgName' value='"+target.data('name') +"'>";
+
+                    str += "<input type='hidden' name='imageDTOList["+i+"].path' value='"+target.data('path')+"'>";
+
+                    str += "<input type='hidden' name='imageDTOList["+i+"].uuid' value='"+target.data('uuid')+"'>";
+
+                });
+
+                //태그들이 추가된 것을 확인한 후에 comment를 제거
+                $(".box").html(str);
+
+                $("form").submit();
+
+            });
+			
+		}); //document ready
+		
+		</script>
+     		 <!-- 자바스크립트 API 불러오기 /  -->
+                        <script type="text/javascript"
+                           src="//dapi.kakao.com/v2/maps/sdk.js?appkey=48f6301bb9be5b49ef1aeea540a1eaa5&libraries=services"></script>
+                        <!-- 지도 띄우기 -->
+                        <script>
+                        window.onload = function() {
+                    	    searchAddress();
+                    	}
+                        
+         var container = document.getElementById('map'); // 지도 담을 영역
+         var options = { //지도 생성할 때 옵션
+            center: new kakao.maps.LatLng(37.7398, 127.0473), //지도의 중심좌표값 설정 (의정부역으로 지정)
+            level: 6 //지도 레벨 (확대, 축소 정도)
+         };
+
+         var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+         var prevMarker = null; //이전 마커 객체 변수
+         var prevInfowindow = null; //이전 Info 객체 변수
+         
+         //검색 기능 추가
+         var geocoder = new kakao.maps.services.Geocoder();
+
+         
+         //지도에 클릭이벤트 구현, 클릭하면 마지막 파라미터로 넘어온 함수 호출
+         kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
+            //클릭한 위치의 위도, 경도 정보를 가져옴.
+            var latlng = mouseEvent.latLng;
+            
+            //이전 마커 객체가 존재한다면 삭제
+            if (prevMarker !== null){
+               prevMarker.setMap(null);
+               prevMarker = null;
+            }
+            
+            //위와 동일하도록 이전 InfoWindow 객체가 존재한다면 삭제
+            if (prevInfowindow !== null){
+               prevInfowindow.close(null);
+               prevInfowindow = null;
+            }
+            
+            var marker = new kakao.maps.Marker({ 
+               position: latlng, 
+               map: map 
+            });
+            prevMarker = marker; //이전 마커 객체를 저장함
+            
+            //마커위치를 클릭한 위치로 옮기기
+            marker.setPosition(latlng);
+            
+            //Open Weather Map API 불러오기
+            var api_key = '385a3155b6ee0bb00df1afdbab5e3858'; //Open Weather Map의 API_KEY
+            var url = `https://api.openweathermap.org/data/2.5/weather?lat=${latlng.getLat()}&lon=${latlng.getLng()}&appid=${api_key}`;
+            fetch(url)
+               .then(response => response.json())
+                .then(data => {
+                  var weather = data.weather[0];
+                  var temp = data.main.temp - 273.15;
+                  var message = `<center>날씨: ${weather.description}<br>기온: ${temp.toFixed(1)}°C</center>`;
+                  var infowindow = new kakao.maps.InfoWindow({
+                     content: message, 
+                     position: latlng, 
+                     maxWidth: 400
+                     });
+                  infowindow.open(map, marker);
+                  prevInfowindow = infowindow;
+               })
+               .catch(error => console.error(error));
+         });
+         
+         
+         /*맵 컨트롤러*/
+         var mapTypeControl = new kakao.maps.MapTypeControl();//지도타입(일반, 스카이뷰) 컨트롤 생성
+         map.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);//컨트롤을 추가해야 지도 위에 표시됨 
+
+         var zoomControl = new kakao.maps.ZoomControl();//지도 확대 축소 제어할 수 있는 줌 컨트롤 생성
+         map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+         
+         //주소 검색
+         document.getElementById('search').addEventListener('keydown', function(event){
+            if(event.keyCode == 13){
+               searchAddress();
+            }
+         });
+         
+      
+         
+         function searchAddress(){
+            var address = "[[${dto.location}]]";
+
+            
+            geocoder.addressSearch(address, function(result, status){
+               if(status === kakao.maps.services.Status.OK) {
+                  var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+                  var addMarker = new kakao.maps.Marker({
+                     position: coords
+                  });
+                  addMarker.setMap(map);
+                  map.setCenter(coords);
+                  
+                  if (prevMarker !== null){
+                     prevMarker.setMap(null);
+                     prevMarker = null;
+                  }
+                  
+                  prevMarker = addMarker;
+                  
+
+                  if (prevInfowindow !== null){
+                     prevInfowindow.close(null);
+                     prevInfowindow = null;
+                  }
+                  
+               var api_key = '385a3155b6ee0bb00df1afdbab5e3858'; //Open Weather Map의 API_KEY
+               var url = `https://api.openweathermap.org/data/2.5/weather?lat=${latlng.getLat()}&lon=${latlng.getLng()}&appid=${api_key}`;
+               fetch(url)
+                  .then(response => response.json())
+                   .then(data => {
+                     var weather = data.weather[0];
+                     var temp = data.main.temp - 273.15;
+                     var message = `<center>날씨: ${weather.description}<br>기온: ${temp.toFixed(1)}°C</center>`;
+                     var infowindow = new kakao.maps.InfoWindow({
+                        content: message, 
+                        position: latlng, 
+                        maxWidth: 400
+                        });
+                     infowindow.open(map, marker);
+                     prevInfowindow = infowindow;
+                  })
+                  .catch(error => console.error(error));
+               }else if (status === null){   
+                  alert('주소를 입력해주세요.')
+               }else{
+                  alert('주소를 찾을 수 없습니다.')
+               }
+               
+               
+               
+            });
+         }
+
+      </script>
+</body>
+</html>
